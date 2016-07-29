@@ -30,6 +30,7 @@ void Ui::Init() {
   button_state_ = 0;
   button_ignore_mask_ = 0;
   screensaver_ = false;
+  summonscreensaver_ = false;
 
   encoder_right_.Init(OC_GPIO_ENC_PINMODE);
   encoder_left_.Init(OC_GPIO_ENC_PINMODE);
@@ -90,10 +91,13 @@ UiMode Ui::DispatchEvents(App *app) {
 
     switch (event.type) {
       case UI::EVENT_BUTTON_PRESS:
+        summonscreensaver_ = false;
         app->HandleButtonEvent(event);
         break;
       case UI::EVENT_BUTTON_LONG_PRESS:
-        if (OC::CONTROL_BUTTON_R != event.control)
+        if (OC::CONTROL_BUTTON_UP == event.control)
+          summonscreensaver_ = true;
+        else if (OC::CONTROL_BUTTON_R != event.control)
           app->HandleButtonEvent(event);
         else
           return UI_MODE_APP_SETTINGS;
@@ -112,7 +116,10 @@ UiMode Ui::DispatchEvents(App *app) {
       screensaver_ = true;
     return UI_MODE_SCREENSAVER;
   } else {
-    return UI_MODE_MENU;
+    if (!summonscreensaver_)
+      return UI_MODE_MENU;
+    else  
+      return UI_MODE_SCREENSAVER;
   }
 }
 

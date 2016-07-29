@@ -42,7 +42,7 @@ enum UiMode {
 class Ui {
 public:
   static const size_t kEventQueueDepth = 16;
-  static const uint32_t kLongPressTicks = 2000;
+  static const uint32_t kLongPressTicks = 1000;
 
   Ui() { }
 
@@ -105,6 +105,7 @@ private:
   uint16_t button_state_;
   uint16_t button_ignore_mask_;
   bool screensaver_;
+  bool summonscreensaver_;
 
   UI::Encoder<encR1, encR2> encoder_right_;
   UI::Encoder<encL1, encL2> encoder_left_;
