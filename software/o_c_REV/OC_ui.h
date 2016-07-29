@@ -129,6 +129,7 @@ private:
     }
     if (screensaver_) {
       screensaver_ = false;
+      summonscreensaver_ = false;
       ignore = true;
     }
 

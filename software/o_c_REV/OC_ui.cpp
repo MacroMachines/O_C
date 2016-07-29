@@ -91,7 +91,6 @@ UiMode Ui::DispatchEvents(App *app) {
 
     switch (event.type) {
       case UI::EVENT_BUTTON_PRESS:
-        summonscreensaver_ = false;
         app->HandleButtonEvent(event);
         break;
       case UI::EVENT_BUTTON_LONG_PRESS:
@@ -111,15 +110,12 @@ UiMode Ui::DispatchEvents(App *app) {
     MENU_REDRAW = 1;
   }
 
-  if (idle_time() > SCREENSAVER_TIMEOUT_MS) {
+  if (summonscreensaver_ || idle_time() > SCREENSAVER_TIMEOUT_MS) {
     if (!screensaver_)
       screensaver_ = true;
     return UI_MODE_SCREENSAVER;
   } else {
-    if (!summonscreensaver_)
       return UI_MODE_MENU;
-    else  
-      return UI_MODE_SCREENSAVER;
   }
 }
 
